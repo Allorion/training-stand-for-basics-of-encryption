@@ -4,8 +4,11 @@
 
 
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
+import dataRoomReducer from "../pages/room/reducer/DataRoomSlice";
 
-const obj = {}
+const obj = {
+    dataRoomReducer
+}
 
 const rootReducer = combineReducers(obj)
 

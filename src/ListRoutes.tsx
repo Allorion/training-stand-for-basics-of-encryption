@@ -20,7 +20,7 @@ const ListRoutes = () => {
                     <Route path={'/auth'} element={<AuthorizationTemplate/>}/>
                     <Route path={'/list-rooms/'} element={<ListRoomsTemplate/>}/>
                     <Route path={'/room-private/'} element={<RoomTemplate/>}/>
-                    <Route path={'/room-open/'} element={<RoomTemplate/>}/>
+                    <Route path={'/room/join'} element={<RoomTemplate/>}/>
                 </Routes>
             </HashRouter>
         </React.Fragment>
