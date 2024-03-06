@@ -4,6 +4,7 @@
 @import "../../global-components/creating-room/static/scss/creating-room-template";
 @import "../../../pages/list-rooms/static/scss/list-rooms-template";
 @import "../../../pages/room/static/scss/room-template";
+@import "../../../pages/auth/authorization/static/scss/authorization-template";
 
 
 
@@ -29,3 +30,4 @@ body {
 @include CreatingRoomTemplate();
 @include ListRoomsTemplate();
 @include RoomTemplate();
+@include AuthorizationTemplate();
