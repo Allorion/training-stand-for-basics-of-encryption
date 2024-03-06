@@ -14,6 +14,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import {generateToken} from "../../../functions/generateToken";
 import {generateGostKey} from "../../../functions/gost/generateGostKey";
+import {fetchCreateRoom} from "../api/ACCreateRoom";
 
 interface IProps {
 
@@ -55,7 +56,28 @@ const CreatePanel: FC<IProps> = ({}) => {
             alert(warning.join('\n'))
         } else {
             // Создаем ссылку-приглашение с уникальным токеном из библиотеки jsonwebtoken
-            setInvitationLink(`${window.location.href}#/${flagCloseRoom ? 'room-private' : 'room-open'}?token=${generateToken(nameRoom, keyRoom).token}`)
+            setInvitationLink(`${window.location.href}#/room/join?token=${generateToken(nameRoom, keyRoom).token}`)
+        }
+    }
+
+    const handleCreateRoom = () => {
+
+        const warning: string[] = []
+
+        if (nameRoom === '') {
+            warning.push('- Введите название комнаты')
+        }
+        if (keyRoom === '') {
+            warning.push('- Сгенерируйте закрытый ключ ГОСТ 28147-89')
+        }
+        if (invitationLink === '') {
+            warning.push('- Введите название комнаты')
+        }
+
+        if (warning.length > 0) {
+            alert(warning.join('\n'))
+        } else {
+            fetchCreateRoom({token: invitationLink.split('token=')[1], closed: flagCloseRoom, name: nameRoom})
         }
     }
 
@@ -107,6 +129,14 @@ const CreatePanel: FC<IProps> = ({}) => {
                             <p style={{fontWeight: 700, marginTop: '8px', wordBreak: 'break-all'}}>{invitationLink}</p>
                         </Paper>
                     }
+                    <Button
+                        color={'success'}
+                        variant={'outlined'}
+                        disabled={invitationLink === '' || nameRoom === '' || keyRoom === ''}
+                        onClick={handleCreateRoom}
+                    >
+                        Создать комнату
+                    </Button>
                 </Stack>
             </AccordionDetails>
         </Accordion>

@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useReducer} from "react";
 import Button from '@mui/material/Button';
 import {styled} from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -28,31 +28,24 @@ const BootstrapDialog = styled(Dialog)(({theme}) => ({
 
 const CreatingRoomTemplate: FC<IProps> = ({button}) => {
 
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const [open, toggleOpen] = useReducer((v) => !v, false);
 
     return (
         <React.Fragment>
             {button === 'desktop' ?
                 <Button
-                    onClick={handleClickOpen}
+                    onClick={toggleOpen}
                     sx={{my: 2, color: 'white', display: 'block'}}
                 >
                     Создать комнату
                 </Button>
                 :
-                <MenuItem onClick={handleClickOpen}>
+                <MenuItem onClick={toggleOpen}>
                     <Typography textAlign="center">Создать комнату</Typography>
                 </MenuItem>
             }
             <BootstrapDialog
-                onClose={handleClose}
+                onClose={toggleOpen}
                 aria-labelledby="creating-room-template"
                 open={open}
             >
@@ -61,7 +54,7 @@ const CreatingRoomTemplate: FC<IProps> = ({button}) => {
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={toggleOpen}
                     sx={{
                         position: 'absolute',
                         right: 8,
@@ -77,11 +70,8 @@ const CreatingRoomTemplate: FC<IProps> = ({button}) => {
                     <EncryptionPanel/>
                 </DialogContent>
                 <DialogActions>
-                    <Button color={'error'} autoFocus onClick={handleClose}>
-                        Отмена
-                    </Button>
-                    <Button autoFocus onClick={handleClose}>
-                        Создать
+                    <Button color={'error'} autoFocus onClick={toggleOpen}>
+                        Закрыть
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
