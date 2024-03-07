@@ -5,9 +5,11 @@
 
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import dataRoomReducer from "../pages/room/reducer/DataRoomSlice";
+import listRoomsReducer from "../pages/list-rooms/reducers/ListRoomsSlice";
 
 const obj = {
-    dataRoomReducer
+    dataRoomReducer,
+    listRoomsReducer
 }
 
 const rootReducer = combineReducers(obj)

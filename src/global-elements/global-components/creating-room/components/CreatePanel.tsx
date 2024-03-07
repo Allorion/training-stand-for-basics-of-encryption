@@ -56,7 +56,7 @@ const CreatePanel: FC<IProps> = ({}) => {
             alert(warning.join('\n'))
         } else {
             // Создаем ссылку-приглашение с уникальным токеном из библиотеки jsonwebtoken
-            setInvitationLink(`${window.location.href}#/room/join?token=${generateToken(nameRoom, keyRoom).token}`)
+            setInvitationLink(`${window.location.href}room/join?token=${generateToken(nameRoom, keyRoom).token}`)
         }
     }
 

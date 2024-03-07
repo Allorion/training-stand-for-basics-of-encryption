@@ -26,7 +26,11 @@ const initialState: IInitialState = {
 export const dataRoomSlice = createSlice({
     name: 'dataRoomSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        clear(state) {
+            state.dataRoom = null
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchJoinToRoom.pending, (state) => {
@@ -55,6 +59,8 @@ export const dataRoomSlice = createSlice({
     }
 })
 
-export const {} = dataRoomSlice.actions
+export const {
+    clear: clearDataRoom
+} = dataRoomSlice.actions
 
 export default dataRoomSlice.reducer

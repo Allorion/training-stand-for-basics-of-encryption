@@ -4,6 +4,9 @@ import {Container, Paper, Stack, Typography} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import {encryptionGost} from "../../global-elements/functions/gost/encryptionGost";
 import {decryptionGost} from "../../global-elements/functions/gost/decryptionGost";
+import {cleanup} from "@testing-library/react";
+import {useAppDispatch} from "../../store/hooks/redux";
+import {clearDataRoom} from "./reducer/DataRoomSlice";
 
 interface IProps {
 
@@ -12,6 +15,7 @@ interface IProps {
 const RoomTemplate: FC<IProps> = ({}) => {
 
     const location = useLocation()
+    const dispatch = useAppDispatch()
 
     const [textMessage, setTextMessage] = useState<string>('')
     const [listMessage, setListMessage] = useState<{ authorId: number, text: string }[]>([])
@@ -21,6 +25,12 @@ const RoomTemplate: FC<IProps> = ({}) => {
     useEffect(() => {
         if (location.search.split('=')[1] !== '') {
             console.log('Токен верный')
+        }
+
+        return function cleanup() {
+            dispatch(clearDataRoom());
+            setListMessage([])
+            setTextMessage('')
         }
     }, []);
 
