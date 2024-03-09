@@ -18,6 +18,8 @@ import CreatingRoomTemplate from "../creating-room/CreatingRoomTemplate";
 import ConnectingToRoomTemplate from "../connecting-to-room/ConnectingToRoomTemplate";
 import {generateRSAKeys} from "../../functions/rsa/generateRSAKeys";
 import AddStateGostkey from "../../functions/gost/AddStateGostKey";
+import {clearAuthUser} from "../../../pages/auth/authorization/reducers/AuthUserSlice";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 
 interface IProps {
 
@@ -26,9 +28,12 @@ interface IProps {
 const NavBar: FC<IProps> = ({}) => {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+    const {authUser} = useAppSelector(state => state.authUserReducer)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
@@ -47,6 +52,13 @@ const NavBar: FC<IProps> = ({}) => {
 
     const handleCreateKeyRSA = () => {
         generateRSAKeys()
+    }
+
+    const handleLogOut = () => {
+        navigate('/auth')
+        setAnchorElUser(null);
+        localStorage.setItem('x-auth-token', 'null');
+        dispatch(clearAuthUser())
     }
 
     return (
@@ -87,67 +99,82 @@ const NavBar: FC<IProps> = ({}) => {
                             }}>
                                 <Typography textAlign="center">Главная</Typography>
                             </MenuItem>
-                            <MenuItem onClick={() => {
-                                navigate('/list-rooms/')
-                            }}>
-                                <Typography textAlign="center">Комнаты</Typography>
-                            </MenuItem>
-                            <CreatingRoomTemplate button={'phone'}/>
-                            <ConnectingToRoomTemplate button={'phone'}/>
+                            {authUser.valid &&
+                                <MenuItem onClick={() => {
+                                    navigate('/list-rooms/')
+                                }}>
+                                    <Typography textAlign="center">Комнаты</Typography>
+                                </MenuItem>
+                            }
+                            {authUser.valid &&
+                                <>
+                                    <CreatingRoomTemplate button={'phone'}/>
+                                    <ConnectingToRoomTemplate button={'phone'}/>
+                                </>
+                            }
                         </Menu>
                     </Box>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        <Button
-                            onClick={() => {
-                                navigate('/')
-                            }}
-                            sx={{my: 2, color: 'white', display: 'block'}}
-                        >
-                            Главная
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                navigate('/list-rooms/')
-                            }}
-                            sx={{my: 2, color: 'white', display: 'block'}}
-                        >
-                            Комнаты
-                        </Button>
-                        <CreatingRoomTemplate button={'desktop'}/>
-                        <ConnectingToRoomTemplate button={'desktop'}/>
+                        {authUser.valid &&
+                            <Button
+                                onClick={() => {
+                                    navigate('/')
+                                }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
+                            >
+                                Главная
+                            </Button>
+                        }
+                        {authUser.valid &&
+                            <Button
+                                onClick={() => {
+                                    navigate('/list-rooms/')
+                                }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
+                            >
+                                Комнаты
+                            </Button>
+                        }
+                        {authUser.valid &&
+                            <>
+                                <CreatingRoomTemplate button={'desktop'}/>
+                                <ConnectingToRoomTemplate button={'desktop'}/>
+                            </>
+                        }
                     </Box>
-
-                    <Box sx={{flexGrow: 0}}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
-                                <Avatar alt="Иконка пользователя" src="/static/images/avatar/2.jpg"/>
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{mt: '45px'}}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            <MenuItem onClick={handleCreateKeyRSA}>
-                                <Typography textAlign="center">Генерация ключей RSA</Typography>
-                            </MenuItem>
-                            <AddStateGostkey/>
-                            <MenuItem onClick={handleCloseUserMenu}>
-                                <Typography textAlign="center">Выход</Typography>
-                            </MenuItem>
-                        </Menu>
-                    </Box>
+                    {authUser.valid &&
+                        <Box sx={{flexGrow: 0}}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
+                                    <Avatar alt="Иконка пользователя" src="/static/images/avatar/2.jpg"/>
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{mt: '45px'}}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                <MenuItem onClick={handleCreateKeyRSA}>
+                                    <Typography textAlign="center">Генерация ключей RSA</Typography>
+                                </MenuItem>
+                                <AddStateGostkey/>
+                                <MenuItem onClick={handleLogOut}>
+                                    <Typography textAlign="center">Выход</Typography>
+                                </MenuItem>
+                            </Menu>
+                        </Box>
+                    }
                 </Toolbar>
             </Container>
         </AppBar>

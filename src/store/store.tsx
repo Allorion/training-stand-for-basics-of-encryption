@@ -6,10 +6,12 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit'
 import dataRoomReducer from "../pages/room/reducer/DataRoomSlice";
 import listRoomsReducer from "../pages/list-rooms/reducers/ListRoomsSlice";
+import authUserReducer from "../pages/auth/authorization/reducers/AuthUserSlice";
 
 const obj = {
     dataRoomReducer,
-    listRoomsReducer
+    listRoomsReducer,
+    authUserReducer
 }
 
 const rootReducer = combineReducers(obj)

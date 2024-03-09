@@ -3,6 +3,8 @@ import {Button, Container, Paper, Stack, TextField} from "@mui/material";
 import {fetchCheckAuthUser} from "./api/ACCheckAuthUser";
 import {useNavigate} from "react-router-dom";
 import {fetchAuthorization} from "./api/ACAuthorization";
+import {useAppDispatch} from "../../../store/hooks/redux";
+import {editAuthUser} from "./reducers/AuthUserSlice";
 
 interface IProps {
 
@@ -11,6 +13,7 @@ interface IProps {
 const AuthorizationTemplate: FC<IProps> = ({}) => {
 
     const navigate = useNavigate()
+    const dispatch = useAppDispatch()
 
     const [login, setLogin] = useState<string>('')
     const [password, setPassword] = useState<string>('')
@@ -35,7 +38,10 @@ const AuthorizationTemplate: FC<IProps> = ({}) => {
     const handleAuth = () => {
         fetchAuthorization({name: login, password})
             .then(status => {
-                status === 200 && navigate('/')
+                if (status === 200) {
+                    navigate('/')
+                    dispatch(editAuthUser({ token: localStorage.getItem('x-auth-token'), valid: true }))
+                }
             })
     }
 
