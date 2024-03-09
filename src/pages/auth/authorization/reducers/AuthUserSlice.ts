@@ -5,15 +5,22 @@ export interface IAuthUser {
     valid: boolean
 }
 
+export interface IDataConnectRoom {
+    privateKey: string,
+    linkToConnect: string
+}
+
 interface IInitialState {
-    authUser: IAuthUser
+    authUser: IAuthUser,
+    dataConnectRoom: IDataConnectRoom[]
 }
 
 const initialState: IInitialState = {
     authUser: {
         token: null,
         valid: false
-    }
+    },
+    dataConnectRoom: []
 }
 
 export const authUserSlice = createSlice({
@@ -25,13 +32,17 @@ export const authUserSlice = createSlice({
         },
         clear(state) {
             state.authUser = {token: null, valid: false}
+        },
+        addDataConnectToRoom(state, action: {payload: IDataConnectRoom, type: string}) {
+            state.dataConnectRoom.push(action.payload)
         }
     }
 })
 
 export const {
     edit: editAuthUser,
-    clear: clearAuthUser
+    clear: clearAuthUser,
+    addDataConnectToRoom: addDataConnectToRoomAuthUser
 } = authUserSlice.actions
 
 export default authUserSlice.reducer

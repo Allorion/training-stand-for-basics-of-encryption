@@ -144,7 +144,7 @@ const NavBar: FC<IProps> = ({}) => {
                     </Box>
                     {authUser.valid &&
                         <Box sx={{flexGrow: 0}}>
-                            <Tooltip title="Open settings">
+                            <Tooltip title="Меню профиля">
                                 <IconButton onClick={handleOpenUserMenu} sx={{p: 0}}>
                                     <Avatar alt="Иконка пользователя" src="/static/images/avatar/2.jpg"/>
                                 </IconButton>

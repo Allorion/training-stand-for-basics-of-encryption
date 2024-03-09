@@ -18,6 +18,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import FileChange from "../../global-components/FileChange";
 import {decryptionRSA} from "../rsa/decryptionRSA";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
+import {addDataConnectToRoomAuthUser} from "../../../pages/auth/authorization/reducers/AuthUserSlice";
 
 interface IProps {
 
@@ -25,13 +27,25 @@ interface IProps {
 
 const AddStateGostKey: FC<IProps> = ({}) => {
 
+    const dispatch = useAppDispatch()
+
     const [open, setOpen] = React.useState(false);
 
     const [privateKeyRsa, setPrivateKeyRsa] = useState<string>('')
     const [privatecKeyGost, setPrivateKeyGost] = useState<string>('')
     const [urlToRoom, setUrlToRoom] = useState<string>('')
     const [flagUrlToRoomFile, setFlagUrlToRoomFile] = useState<boolean>(false)
-    const [listKeyGost, setListKeyGost] = useState<{url: string, key: string}[]>([])
+    const {dataConnectRoom} = useAppSelector(state => state.authUserReducer)
+
+    useEffect(() => {
+
+        return function cleanup() {
+            setPrivateKeyRsa('')
+            setPrivateKeyGost('')
+            setUrlToRoom('')
+            setFlagUrlToRoomFile(false)
+        }
+    }, []);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,7 +75,7 @@ const AddStateGostKey: FC<IProps> = ({}) => {
 
         const newKeyGost: string = decryptionRSA(privatecKeyGost, privateKeyRsa)
 
-        const duplicate = listKeyGost.filter(opt => opt.key === newKeyGost || opt.url === urlToRoom)
+        const duplicate = dataConnectRoom.filter(opt => opt.privateKey === newKeyGost || opt.linkToConnect === urlToRoom)
 
         const warning: string[] = []
 
@@ -81,7 +95,7 @@ const AddStateGostKey: FC<IProps> = ({}) => {
         if (warning.length > 0) {
             alert(warning.join('\n'))
         } else {
-            setListKeyGost([...listKeyGost, { url: urlToRoom, key: newKeyGost }])
+            dispatch(addDataConnectToRoomAuthUser({ linkToConnect: urlToRoom, privateKey: newKeyGost }))
         }
     }
 
@@ -160,12 +174,12 @@ const AddStateGostKey: FC<IProps> = ({}) => {
                             </Paper>
                         }
                         <List sx={{width: '100%', maxHeight: 300, overflowY: 'auto', bgcolor: 'background.paper'}}>
-                            {listKeyGost.map((opt, index) => {
+                            {dataConnectRoom.map((opt, index) => {
                                 return (
                                     <ListItem key={index}>
                                         <Paper sx={{width: '100%', padding: '8px', wordBreak: 'break-all'}}>
-                                            <ListItemText primary={<>Ключ для комнаты:<b>{opt.url}</b></>}
-                                                          secondary={`${opt.key.slice(0, 5)}...................${opt.key.slice(59, 64)}`}/>
+                                            <ListItemText primary={<>Ссылка для подключения к комнате:<b>{opt.linkToConnect}</b></>}
+                                                          secondary={`${opt.privateKey.slice(0, 5)}...................${opt.privateKey.slice(59, 64)}`}/>
                                         </Paper>
                                     </ListItem>
                                 )
