@@ -9,8 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import {CircularProgress, MenuItem} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import {useNavigate} from "react-router-dom";
-import {fetchJoinToRoom} from "./api/ACJoinToRoom";
-import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
+import {useAppSelector} from "../../../store/hooks/redux";
 
 interface IProps {
     button: 'desktop' | 'phone'
@@ -24,8 +23,6 @@ const ConnectingToRoomTemplate: FC<IProps> = ({button}) => {
     const {noData, loading, dataRoom} = useAppSelector(state => state.dataRoomReducer)
 
     const navigate = useNavigate()
-
-    const dispatch = useAppDispatch()
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -66,7 +63,8 @@ const ConnectingToRoomTemplate: FC<IProps> = ({button}) => {
             alert(error.join('\n'))
         } else {
             const splitUrl = data.url.split('token=')[1]
-            dispatch(fetchJoinToRoom(splitUrl))
+            navigate(`/room/join?token=${splitUrl}`)
+            setOpen(false)
         }
 
     }
@@ -76,13 +74,6 @@ const ConnectingToRoomTemplate: FC<IProps> = ({button}) => {
             alert(noData)
         }
     }, [noData]);
-
-    useEffect(() => {
-        if (dataRoom !== null) {
-            navigate(`/room/join?token=${dataRoom.token}`)
-            setOpen(false)
-        }
-    }, [dataRoom]);
 
     useEffect(() => {
         return function cleanup() {

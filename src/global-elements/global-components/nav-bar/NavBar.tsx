@@ -10,7 +10,6 @@ import {
     MenuItem,
     Toolbar,
     Tooltip,
-    Typography
 } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import {useNavigate} from "react-router-dom";
@@ -96,14 +95,14 @@ const NavBar: FC<IProps> = ({}) => {
                         >
                             <MenuItem onClick={() => {
                                 navigate('/')
-                            }}>
-                                <Typography textAlign="center">Главная</Typography>
+                            }} style={{textAlign: 'center'}}>
+                                Главная
                             </MenuItem>
                             {authUser.valid &&
                                 <MenuItem onClick={() => {
                                     navigate('/list-rooms/')
-                                }}>
-                                    <Typography textAlign="center">Комнаты</Typography>
+                                }} style={{textAlign: 'center'}}>
+                                    Комнаты
                                 </MenuItem>
                             }
                             {authUser.valid &&
@@ -165,12 +164,12 @@ const NavBar: FC<IProps> = ({}) => {
                                 open={Boolean(anchorElUser)}
                                 onClose={handleCloseUserMenu}
                             >
-                                <MenuItem onClick={handleCreateKeyRSA}>
-                                    <Typography textAlign="center">Генерация ключей RSA</Typography>
+                                <MenuItem onClick={handleCreateKeyRSA} style={{textAlign: 'center'}}>
+                                    Генерация ключей RSA
                                 </MenuItem>
                                 <AddStateGostkey/>
-                                <MenuItem onClick={handleLogOut}>
-                                    <Typography textAlign="center">Выход</Typography>
+                                <MenuItem onClick={handleLogOut} style={{textAlign: 'center'}}>
+                                    Выход
                                 </MenuItem>
                             </Menu>
                         </Box>

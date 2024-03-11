@@ -1,7 +1,7 @@
 import {createSlice, SerializedError} from "@reduxjs/toolkit";
 import {fetchJoinToRoom} from "../../../global-elements/global-components/connecting-to-room/api/ACJoinToRoom";
 
-export interface IDataRoomSlice {
+export interface IDataRoom {
     "id": number,
     "name": string,
     "closed": boolean,
@@ -13,14 +13,14 @@ interface IInitialState {
     loading: 'idle' | 'pending',
     error: null | SerializedError,
     noData: string | null,
-    dataRoom: IDataRoomSlice | null
+    dataRoom: IDataRoom | null,
 }
 
 const initialState: IInitialState = {
     loading: 'idle',
     error: null,
     noData: null,
-    dataRoom: null
+    dataRoom: null,
 }
 
 export const dataRoomSlice = createSlice({
@@ -29,6 +29,7 @@ export const dataRoomSlice = createSlice({
     reducers: {
         clear(state) {
             state.dataRoom = null
+            state.noData = null
         }
     },
     extraReducers: (builder) => {

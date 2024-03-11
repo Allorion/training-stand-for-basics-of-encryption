@@ -34,6 +34,6 @@ export const fetchAuthorization = async (obj: { name: string, password: string }
         }
     }
 
-    return response.status
+    return {status: response.status, data: json.user}
 
 }

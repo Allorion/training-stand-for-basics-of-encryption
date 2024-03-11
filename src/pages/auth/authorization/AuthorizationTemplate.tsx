@@ -29,7 +29,7 @@ const AuthorizationTemplate: FC<IProps> = ({}) => {
     useEffect(() => {
         fetchCheckAuthUser()
             .then(res => {
-                if (res === 200) {
+                if (res.status === 200) {
                     navigate('/')
                 }
             })
@@ -37,10 +37,10 @@ const AuthorizationTemplate: FC<IProps> = ({}) => {
 
     const handleAuth = () => {
         fetchAuthorization({name: login, password})
-            .then(status => {
-                if (status === 200) {
+            .then(resp => {
+                if (resp.status === 200) {
                     navigate('/')
-                    dispatch(editAuthUser({ token: localStorage.getItem('x-auth-token'), valid: true }))
+                    dispatch(editAuthUser({ authUser: {token: localStorage.getItem('x-auth-token'), valid: true}, userInfo: resp.data }))
                 }
             })
     }

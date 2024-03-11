@@ -3,14 +3,17 @@ export const fetchCheckAuthUser = async () => {
         let url = `http://localhost:3001/api/user/refresh`
 
         let response = await fetch(url, {
-            method: 'GET',
+            method: 'POST',
             headers: {
+                "Content-Type": "application/json",
                 'x-auth-token': localStorage.getItem('x-auth-token')!
             },
         });
 
-        return response.status;
+        const json = await response.json()
+
+        return {status: response.status, data: json.user}
     } catch (e) {
-        return 500
+        return {status: 500, data: null}
     }
 }

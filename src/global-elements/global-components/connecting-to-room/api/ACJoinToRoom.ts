@@ -14,8 +14,9 @@ export const fetchJoinToRoom = createAsyncThunk(
         let url = `http://localhost:3001/api/room/join?token=${token}`
 
         let response = await fetch(url, {
-            method: 'GET',
+            method: 'POST',
             headers: {
+                "Content-Type": "application/json",
                 'x-auth-token': localStorage.getItem('x-auth-token')!
             },
         });

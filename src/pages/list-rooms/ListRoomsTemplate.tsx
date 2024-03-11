@@ -17,7 +17,7 @@ const ListRoomsTemplate: FC<IProps> = ({}) => {
 
     const allListRooms = useAppSelector(selectAllListRooms)
 
-    const {loading, dataRoom} = useAppSelector(state => state.dataRoomReducer)
+    const {loading} = useAppSelector(state => state.dataRoomReducer)
 
     const {noData} = useAppSelector(state => state.listRoomsReducer)
 
@@ -26,19 +26,18 @@ const ListRoomsTemplate: FC<IProps> = ({}) => {
     }, []);
 
     useEffect(() => {
-        if (dataRoom !== null) {
-            navigate(`/room/join?token=${dataRoom.token}`)
-        }
-    }, [dataRoom]);
-
-    useEffect(() => {
         if (noData) {
             alert('Открытых комнат нет')
         }
     }, [noData]);
 
-    const handleJoinRoom = (token: string) => {
-        dispatch(fetchJoinToRoom(token))
+    const handleJoinRoom = async (token: string) => {
+        await dispatch(fetchJoinToRoom(token)).then((e) => {
+            if (typeof e.payload === 'object') {
+                //@ts-ignore
+                navigate(`/room/join?token=${e.payload.token}`)
+            }
+        })
     }
 
     return (
