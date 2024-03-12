@@ -1,26 +1,16 @@
-// Импортируем библиотеку для работы с криптографией
 import CryptoJS from "crypto-js";
 
-// Создаем функцию, которая генерирует 32-битный подключ
-function generateSubkey(): number {
-    // Генерируем 4 случайных байта с помощью библиотеки crypto-js
+function generateSubkey(): string {
     const bytes: CryptoJS.lib.WordArray = CryptoJS.lib.WordArray.random(4);
-
-    // Преобразуем байты в 32-битное число
-    // Возвращаем подключение
-    return bytes.words[0];
+    return CryptoJS.enc.Hex.stringify(bytes);
 }
 
-// Создаем функцию, которая генерирует 32-битный ключ для шифрования алгоритмом ГОСТ 28147-89
-export function generateGostKey() {
-    // Создаем массив для хранения восьми подключей
-    const subkeys: string[] = [];
+export function generateGostKey(): string {
+    const subkeys: Set<string> = new Set();
 
-    // Генерируем восемь подключей
-    for (let i = 0; i < 8; i++) {
-        subkeys.push(generateSubkey().toString(16));
+    while (subkeys.size < 8) {
+        let subkeyHex = generateSubkey().toString()
+        subkeys.add(subkeyHex);
     }
-
-    // Возвращаем ключ в виде массива подключей
-    return subkeys.join('');
+    return Array.from(subkeys).join('');
 }

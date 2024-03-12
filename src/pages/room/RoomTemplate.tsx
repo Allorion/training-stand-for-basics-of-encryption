@@ -1,13 +1,13 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {Typography} from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import {encryptionGost} from "../../global-elements/functions/gost/encryptionGost";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {clearDataRoom} from "./reducer/DataRoomSlice";
 import {fetchJoinToRoom} from "../../global-elements/global-components/connecting-to-room/api/ACJoinToRoom";
 import {SOCKET} from "../../global-elements/CONSTANTS";
-import {decryptionGost} from "../../global-elements/functions/gost/decryptionGost";
+import {CryptGost} from "../../global-elements/functions/gost/CryptGost";
+
 
 interface IProps {
 
@@ -27,6 +27,10 @@ const RoomTemplate: FC<IProps> = ({}) => {
     const {dataConnectRoom, userInfo} = useAppSelector(state => state.authUserReducer)
 
     const {dataRoom} = useAppSelector(state => state.dataRoomReducer)
+
+    const infoRoom = dataConnectRoom.filter(opt => opt.linkToConnect.split('=')[1] === location.search.split('=')[1])
+
+    const classCryptGost = useRef(infoRoom.length > 0 ? new CryptGost(infoRoom[0].privateKey) : undefined);
 
     useEffect(() => {
 
@@ -62,15 +66,13 @@ const RoomTemplate: FC<IProps> = ({}) => {
 
         const infoRoom = dataConnectRoom.filter(opt => opt.linkToConnect.split('=')[1] === location.search.split('=')[1])
 
-        if (infoRoom.length > 0) {
-            const encryptedHex: string = encryptionGost(infoRoom[0].privateKey, textMessage)
+        if (infoRoom.length > 0 && classCryptGost.current !== undefined) {
+            const encryptedHex: string = classCryptGost.current.encrypt(textMessage);
             if (userInfo !== null) {
                 SOCKET.emit('sendMessage', {authorId: userInfo.id, text: encryptedHex})
                 setTextMessage('')
             }
         }
-        // const encryptedHex: string = encryptionGost("a3f9c6e8b72d4a5c1e6f3a9b8c7d2e5f6e3a1b9c8d7e2f5f4a3b9c8d7e2f5f4a", textMessage)
-        // const decryptedText: string = decryptionGost("a3f9c6e8b72d4a5c1e6f3a9b8c7d2e5f6e3a1b9c8d7e2f5f4a3b9c8d7e2f5f4a", encryptedHex)
     }
 
     useEffect(() => {
@@ -89,8 +91,8 @@ const RoomTemplate: FC<IProps> = ({}) => {
 
         const infoRoom = dataConnectRoom.filter(opt => opt.linkToConnect.split('=')[1] === location.search.split('=')[1])
 
-        if (infoRoom.length > 0) {
-            return decryptionGost(infoRoom[0].privateKey, text)
+        if (infoRoom.length > 0 && classCryptGost.current !== undefined) {
+            return classCryptGost.current.decrypt(text);
         } else {
             return text
         }
