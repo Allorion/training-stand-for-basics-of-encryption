@@ -1,0 +1,14 @@
+@mixin HomePage() {
+  .home-container {
+
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    .home-paper {
+      padding: 24px;
+    }
+  }
+}

@@ -13,7 +13,7 @@ interface IProps {
 
 }
 
-// http://localhost:3000/#/room/join?token=e1c51a482af2a757ae0c579ca93f5e49c527608c189198eba122aad235cb26a7
+// http://${hostName}:3000/#/room/join?token=e1c51a482af2a757ae0c579ca93f5e49c527608c189198eba122aad235cb26a7
 
 const RoomTemplate: FC<IProps> = ({}) => {
 

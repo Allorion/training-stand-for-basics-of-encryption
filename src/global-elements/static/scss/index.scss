@@ -2,6 +2,7 @@
 @import "colors";
 @import "../../global-components/nav-bar/static/scss/nav-bar";
 @import "../../global-components/creating-room/static/scss/creating-room-template";
+@import "../../../pages/home/static/scss/home-page";
 @import "../../../pages/list-rooms/static/scss/list-rooms-template";
 @import "../../../pages/room/static/scss/room-template";
 @import "../../../pages/auth/authorization/static/scss/authorization-template";
@@ -12,6 +13,142 @@ body {
   background-color: $bg-site-color;
   color: $color-text-site;
 }
+
+h1.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 24pt; /* размер шрифта */
+  font-weight: bold; /* жирность шрифта */
+  text-align: center; /* выравнивание по центру */
+  margin-top: 1cm; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+}
+
+h2.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 18pt; /* размер шрифта */
+  font-weight: bold; /* жирность шрифта */
+  text-align: left; /* выравнивание по левому краю */
+  margin-top: 0.5cm; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+  text-indent: 1.25cm; /* отступ первой строки абзаца */
+}
+
+h5.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 16pt; /* размер шрифта */
+  font-weight: bold; /* жирность шрифта */
+  text-align: left; /* выравнивание по левому краю */
+  margin-top: 0.5cm; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+  text-indent: 1.25cm; /* отступ первой строки абзаца */
+}
+
+p.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 14pt; /* размер шрифта */
+  line-height: 1.5; /* межстрочный интервал */
+  text-align: justify; /* выравнивание по ширине */
+  text-indent: 1.25cm; /* отступ первой строки абзаца */
+  margin-top: 0; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+}
+
+p.formula {
+  margin: 1cm 0; /* отступы сверху и снизу */
+  font-family: "Times New Roman", serif; /* тип шрифта */
+  font-size: 14pt; /* размер шрифта */
+  overflow-wrap: break-word; /* перенос длинных слов */
+  white-space: pre-wrap;
+  word-break: break-all; /* перенос длинных слов */
+  overflow: auto;
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  justify-content: center;
+}
+
+p.formula::after {
+  content: " (" attr(data-number) ")"; /* добавление номера формулы из атрибута */
+  display: inline-block; /* блочно-строчный элемент */
+  font-size: 12pt; /* размер шрифта для номера формулы */
+}
+
+pre.gost, code.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 14pt; /* размер шрифта */
+  line-height: 1.5; /* межстрочный интервал */
+  text-align: justify; /* выравнивание по ширине */
+  text-indent: 1.25cm; /* отступ первой строки абзаца */
+  margin-top: 0; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+  word-break: break-all; /* перенос длинных слов */
+}
+
+span.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 14pt; /* размер шрифта */
+  line-height: 1.5; /* межстрочный интервал */
+  text-align: justify; /* выравнивание по ширине */
+  margin-top: 0; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+  height: fit-content; /* высота по размеру содержимого */
+}
+
+span.bold {
+  font-weight: 900;
+}
+
+ul.gost, ol.gost {
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 14pt; /* размер шрифта */
+  line-height: 1.5; /* межстрочный интервал */
+  text-align: justify; /* выравнивание по ширине */
+  margin-top: 0; /* отступ сверху */
+  margin-bottom: 0.5cm; /* отступ снизу */
+  padding-left: 0;
+}
+
+li.gost {
+  list-style-type: none; /* без маркеров */
+  text-indent: 1.25cm; /* отступ первой строки элемента списка */
+}
+
+ol.gost li.gost:before {
+  content: counter(list-item) ". "; /* нумерация элементов упорядоченного списка */
+}
+
+ul.gost li.gost:before {
+  padding-right: 0.5cm;
+  content: "— "; /* маркер элементов неупорядоченного списка */
+}
+
+table.gost {
+  width: 100%; /* ширина таблицы */
+  border-collapse: collapse; /* схлопывание границ */
+  font-family: Times New Roman, serif; /* шрифт по умолчанию */
+  font-size: 14pt; /* размер шрифта */
+  margin-top: 1cm;
+  margin-bottom: 1cm;
+  white-space: normal; /* перенос длинных слов */
+}
+
+th.gost, td.gost {
+  border: 1px solid black !important; /* граница ячеек */
+  padding: 0.5cm; /* отступ внутри ячеек */
+  text-align: center; /* выравнивание текста по центру */
+}
+
+th.gost {
+  font-weight: bold; /* жирность шрифта */
+  vertical-align: middle; /* вертикальное выравнивание по середине */
+}
+
+caption.gost {
+  caption-side: bottom; /* расположение заголовка снизу */
+  font-style: italic; /* курсивный шрифт */
+  margin-top: 0.5cm; /* отступ сверху */
+}
+
 
 @mixin flexPosition($direction, $justify, $align) {
   display: flex;
@@ -26,7 +163,9 @@ body {
   box-shadow: 2px 2px 4px 2px rgba(65, 90, 119, 0.40);
 }
 
+
 @include NavBar();
+@include HomePage();
 @include CreatingRoomTemplate();
 @include ListRoomsTemplate();
 @include RoomTemplate();

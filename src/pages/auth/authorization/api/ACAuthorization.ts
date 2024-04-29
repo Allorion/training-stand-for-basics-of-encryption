@@ -1,3 +1,5 @@
+import {hostName} from "../../../../global-elements/globalData";
+
 interface IResultAuth {
     error: string | null,
     user: {
@@ -11,12 +13,12 @@ interface IResultAuth {
 
 export const fetchAuthorization = async (obj: { name: string, password: string }) => {
 
-    let url = `http://localhost:3001/api/user/auth`
+    let url = `http://${hostName}:8080/api/user/auth`
 
     let response = await fetch(url, {
         method: 'POST',
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(obj)
     });

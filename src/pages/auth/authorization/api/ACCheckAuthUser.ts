@@ -1,6 +1,8 @@
+import {hostName} from "../../../../global-elements/globalData";
+
 export const fetchCheckAuthUser = async () => {
     try {
-        let url = `http://localhost:3001/api/user/refresh`
+        let url = `http://${hostName}:8080/api/user/refresh`
 
         let response = await fetch(url, {
             method: 'POST',

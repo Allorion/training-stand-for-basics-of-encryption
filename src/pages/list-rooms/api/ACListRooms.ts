@@ -1,11 +1,12 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {IListRooms} from "../reducers/ListRoomsSlice";
+import {hostName} from "../../../global-elements/globalData";
 
 export const fetchListRooms = createAsyncThunk(
     'fetchListRooms',
     async () => {
 
-        const url = 'http://localhost:3001/api/room/list-rooms'
+        const url = `http://${hostName}:8080/api/room/list-rooms`
 
         const response = await fetch(url, {
             method: "GET",

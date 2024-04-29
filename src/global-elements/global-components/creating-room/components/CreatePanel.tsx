@@ -15,12 +15,16 @@ import Button from "@mui/material/Button";
 import {generateToken} from "../../../functions/generateToken";
 import {generateGostKey} from "../../../functions/gost/generateGostKey";
 import {fetchCreateRoom} from "../api/ACCreateRoom";
+import {addDataConnectToRoomAuthUser} from "../../../../pages/auth/authorization/reducers/AuthUserSlice";
+import {useAppDispatch} from "../../../../store/hooks/redux";
 
 interface IProps {
 
 }
 
 const CreatePanel: FC<IProps> = ({}) => {
+
+    const dispatch = useAppDispatch()
 
     const [invitationLink, setInvitationLink] = useState<string>('')
     const [nameRoom, setNameRoom] = useState<string>('')
@@ -71,13 +75,15 @@ const CreatePanel: FC<IProps> = ({}) => {
             warning.push('- Сгенерируйте закрытый ключ ГОСТ 28147-89')
         }
         if (invitationLink === '') {
-            warning.push('- Введите название комнаты')
+            warning.push('- Сгенерируйте ссылку-приглашение')
         }
 
         if (warning.length > 0) {
             alert(warning.join('\n'))
         } else {
-            fetchCreateRoom({token: invitationLink.split('token=')[1], closed: flagCloseRoom, name: nameRoom})
+            fetchCreateRoom({token: invitationLink.split('token=')[1], closed: flagCloseRoom, name: nameRoom}).then(() => {
+                dispatch(addDataConnectToRoomAuthUser({ linkToConnect: invitationLink, privateKey: keyRoom }))
+            })
         }
     }
 

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 // Импортируем socket.io-client
 import io, {Socket} from 'socket.io-client';
+import {hostName} from "../../global-elements/globalData";
 
 // Создаем компонент ChatRoom
 const ChatRoom = (props: { token: string }) => {
@@ -15,11 +16,11 @@ const ChatRoom = (props: { token: string }) => {
     // Используем эффект для подключения к серверу и получения id комнаты
     useEffect(() => {
         // Создаем новый сокет
-        const newSocket = io('http://localhost:8999');
+        const newSocket = io(`http://${hostName}:8999`);
         // Устанавливаем сокет в состояние
         setSocket(newSocket);
         // Отправляем HTTP-запрос к серверу с токеном комнаты
-        fetch('http://localhost:3000/rooms/join', {
+        fetch(`http://${hostName}:3000/rooms/join`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

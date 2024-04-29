@@ -1,4 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {hostName} from "../../../globalData";
 
 interface IResultAuth {
     "id": number,
@@ -11,7 +12,7 @@ interface IResultAuth {
 export const fetchJoinToRoom = createAsyncThunk(
     'fetchJoinToRoom',
     async (token: string) => {
-        let url = `http://localhost:3001/api/room/join?token=${token}`
+        let url = `http://${hostName}:8080/api/room/join?token=${token}`
 
         let response = await fetch(url, {
             method: 'POST',
